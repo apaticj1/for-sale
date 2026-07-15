@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Plánovač &amp; nápady</title>
+<meta name="theme-color" content="#4f46e5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+
+    <header class="topbar">
+        <h1>Plánovač &amp; nápady</h1>
+        <span class="sync-dot" id="syncDot" title="Stav synchronizace s KESTON OS"></span>
+    </header>
+
+    <main class="view" id="view-tasks" data-view="tasks">
+        <form class="quick-add" id="taskForm">
+            <input type="text" id="taskTitle" placeholder="Nový úkol…" required autocomplete="off">
+            <div class="quick-add-row">
+                <select id="taskPriority">
+                    <option value="low">Nízká priorita</option>
+                    <option value="medium" selected>Střední priorita</option>
+                    <option value="high">Vysoká priorita</option>
+                </select>
+                <input type="date" id="taskDue" title="Termín">
+                <input type="text" id="taskProject" placeholder="Projekt / oblast" autocomplete="off">
+                <button type="submit">Přidat</button>
+            </div>
+        </form>
+
+        <div class="filters" id="taskFilters">
+            <button class="filter-chip active" data-filter="all">Vše</button>
+            <button class="filter-chip" data-filter="todo">K udělání</button>
+            <button class="filter-chip" data-filter="in_progress">Probíhá</button>
+            <button class="filter-chip" data-filter="done">Hotovo</button>
+        </div>
+
+        <ul class="item-list" id="taskList"></ul>
+        <p class="empty-state" id="taskEmpty">Zatím žádné úkoly. Přidejte první výše.</p>
+    </main>
+
+    <main class="view" id="view-ideas" data-view="ideas" hidden>
+        <form class="quick-add" id="ideaForm">
+            <textarea id="ideaTitle" placeholder="Nový nápad… (rychlý zápis)" rows="2" required></textarea>
+            <div class="quick-add-row">
+                <input type="text" id="ideaTags" placeholder="Štítky, oddělené čárkou" autocomplete="off">
+                <button type="submit">Uložit nápad</button>
+            </div>
+        </form>
+
+        <ul class="item-list" id="ideaList"></ul>
+        <p class="empty-state" id="ideaEmpty">Žádné nápady - zapište první myšlenku k businessu.</p>
+    </main>
+
+    <main class="view" id="view-settings" data-view="settings" hidden>
+        <section class="panel">
+            <h2>Napojení na KESTON OS</h2>
+            <p class="hint">Appka funguje plně lokálně. Když vyplníte adresu API vašeho KESTON OS
+                task manageru, můžete data ručně odeslat tlačítkem Synchronizovat.</p>
+            <form id="settingsForm">
+                <label>Adresa API (endpoint)
+                    <input type="url" id="settingsEndpoint" placeholder="https://keston.example.com/api/tasks/import">
+                </label>
+                <label>API klíč
+                    <input type="password" id="settingsApiKey" placeholder="volitelné">
+                </label>
+                <button type="submit">Uložit nastavení</button>
+            </form>
+            <div class="sync-row">
+                <button id="syncNowBtn" type="button">Synchronizovat nyní</button>
+                <span id="syncStatus" class="hint"></span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Záloha dat</h2>
+            <p class="hint">Export/Import JSON - pro ruční zálohu nebo přenos do KESTON OS.</p>
+            <div class="sync-row">
+                <button id="exportBtn" type="button">Exportovat JSON</button>
+                <label class="file-btn">
+                    Importovat JSON
+                    <input type="file" id="importInput" accept="application/json" hidden>
+                </label>
+            </div>
+        </section>
+
+        <section class="panel danger">
+            <h2>Smazat vše</h2>
+            <p class="hint">Nevratně smaže všechny úkoly a nápady z tohoto zařízení.</p>
+            <button id="clearAllBtn" type="button" class="danger-btn">Smazat všechna data</button>
+        </section>
+    </main>
+
+    <nav class="tabbar">
+        <button class="tab active" data-view="tasks">
+            <span>Úkoly</span>
+        </button>
+        <button class="tab" data-view="ideas">
+            <span>Nápady</span>
+        </button>
+        <button class="tab" data-view="settings">
+            <span>Nastavení</span>
+        </button>
+    </nav>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
